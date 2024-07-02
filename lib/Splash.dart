@@ -30,8 +30,8 @@ class _SplashState extends State<Splash> {
             child: Padding(
                 padding: const EdgeInsets.only(top: 190),
                 child: SizedBox(
-                    width: 200.w,
-                    height: 180.h,
+                    width: 300.w,
+                    height: 260.h,
                     child: Image.asset("assets/splash.png"))),
           ),
           Padding(
