@@ -4,7 +4,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class Screen2 extends StatefulWidget {
-  const Screen2({super.key});
+  final String img;
+  final String discription;
+  final String author;
+  final String book;
+
+
+  const Screen2(
+      {super.key,
+      required this.img,
+      required this.discription,
+      required this.author, required this.book});
 
   @override
   State<Screen2> createState() => _Screen2State();
@@ -27,18 +37,52 @@ class _Screen2State extends State<Screen2> {
                   color: Color(0xFF0E0E29),
                   child: Opacity(
                     opacity: 0.25,
-                    child: Image.asset(
-                      "assets/Book.png",
+                    child: Image.network(
+                      widget.img,
                     ),
                   ),
                 ),
+                Padding(
+                  padding: const EdgeInsets.only(left: 40,top: 30),
+                  child: Container(
+                    height: 120.h,
+                    width: 300.w,
+                                child: Column(
+                                  children: [
+                                    Text(
+                                      widget.author,textAlign: TextAlign.center,
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color: Colors.white,
+                                          //Color(0xFFF5F5FA),
+                                          fontSize: 26.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                    Text(
+                                      widget.book,textAlign: TextAlign.center,
+                                      style: GoogleFonts.poppins(
+                                        textStyle: TextStyle(
+                                          color:Colors.red,
+                                          fontSize: 22.sp,
+                                          fontWeight: FontWeight.w500,
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                ) ,
+                  ),
+                ),
+
+
                 Padding(
                   padding: const EdgeInsets.only(left: 90, top: 160),
                   child: SizedBox(
                     width: 200.w,
                     height: 200.h,
-                    child: Image.asset(
-                      "assets/Book.png",
+                    child: Image.network(
+                      widget.img,
                     ),
                   ),
                 ),
@@ -173,7 +217,7 @@ class _Screen2State extends State<Screen2> {
               child: SizedBox(
                 width: 420,
                 child: Text(
-                  "After murdering Harry's parents, James and Lily Potter, evil Lord Voldemort puts a killing curse on Harry, then just a baby. The curse inexplicably reverses, defeating Voldemort and searing a lightning-bolt scar in the middle of the infant's forehead. Harry is then left at the doorstep of his boring but brutish aunt and uncle, the Dursleys.\n\nFor 10 years, Harry lives in the cupboard under the stairs and is subjected to cruel mistreatment by Aunt Petunia, Uncle Vernon and their son Dudley. On his 11th birthday, Harry receives a letter inviting him to study magic at the Hogwarts School of Witchcraft and Wizardry.\n\nHarry discovers that not only is he a wizard, but he is a famous one. He meets two best friends, Ron Weasley and Hermione Granger, and makes his first enemy, Draco Malfoy. At Hogwarts the three friends are all placed into the Gryffindor house. Harry has a knack for the school sport, Quidditch, and is recruited onto the Gryffindor team as its star Seeker.\n\nPerusing the restricted section in the library, Harry discovers that the Sorcerer's Stone produces the Elixir of Life, which gives its drinker the gift of immortality. After realizing that Voldemort might be after the stone, Albus Dumbledore had it moved it to Hogwarts for safekeeping.\n\nHarry finds out that when she died, Lily Potter transferred to her son an ancient magical protection from Voldemort's lethal spells. This protection is what allowed Harry as an infant to survive Voldemort's attack. It also helps Harry keep Voldemort from possessing the Stone, which Dumbledore agrees to destroy.",
+                  widget.discription,
                   style: GoogleFonts.playfairDisplay(
                     textStyle: TextStyle(
                       color: Color(0xFFD5D5E3),
@@ -186,19 +230,30 @@ class _Screen2State extends State<Screen2> {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.only(left: 20,top: 20),
+              padding: const EdgeInsets.only(left: 20, top: 20),
               child: Row(
                 children: [
                   CircleAvatar(
-                    radius: 30.r,
-                    child: Icon(
-                      Icons.bookmark_outline_rounded,
-                      size: 35,
+                    radius: 31,
+                    backgroundColor: Colors.white,
+                    child: Padding(
+                      padding: const EdgeInsets.all(1),
+                      child: CircleAvatar(
+                        radius: 30.r,
+                        backgroundColor: Color(0xFF0E0E29),
+                        child: Icon(
+                          Icons.bookmark_outline_rounded,
+                          color: Colors.white,
+                          size: 35,
+                        ),
+                      ),
                     ),
                   ),
                   SizedBox(width: 30.w),
-                  Container(width: 210.w,
-                    height: 60.h,decoration: ShapeDecoration(
+                  Container(
+                    width: 210.w,
+                    height: 60.h,
+                    decoration: ShapeDecoration(
                       color: Colors.white,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
@@ -210,13 +265,13 @@ class _Screen2State extends State<Screen2> {
                         width: 200.w,
                         height: 55.h,
                         decoration: ShapeDecoration(
-                          color: Color(0xFF2E2E5D),
+                          color: Color(0xFF0E0E29),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(15),
                           ),
                         ),
                         child: Padding(
-                          padding: const EdgeInsets.only(top:5),
+                          padding: const EdgeInsets.only(top: 5),
                           child: Text(
                             "Buy",
                             textAlign: TextAlign.center,
@@ -235,7 +290,9 @@ class _Screen2State extends State<Screen2> {
                 ],
               ),
             ),
-            SizedBox(height: 20.h,)
+            SizedBox(
+              height: 20.h,
+            )
           ],
         ),
       ),

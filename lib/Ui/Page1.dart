@@ -1,5 +1,8 @@
-import 'package:ebook/Screen2.dart';
+import 'package:ebook/Bloc/Ebook/ebook_bloc.dart';
+import 'package:ebook/Repository/ModelClass/EbookModel.dart';
+import 'package:ebook/Ui/Screen2.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -23,6 +26,13 @@ class _Page1State extends State<Page1> {
     "Thriller",
     "Alone",
   ];
+  late List<EbookModel> ebook;
+
+  @override
+  void initState() {
+    BlocProvider.of<EbookBloc>(context).add(FeatchEbook());
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -177,36 +187,67 @@ class _Page1State extends State<Page1> {
             ),
             SizedBox(
               height: 300.h,
-              child: ListView.separated(
-                scrollDirection: Axis.horizontal,
-                itemCount: 20,
-                itemBuilder: (context, position) {
-                  return Padding(
-                    padding: const EdgeInsets.only(left: 10, top: 10),
-                    child: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen2()));},
-                      child: Container(
-                        width: 200.w,
-                        height: 160.h,
-                        decoration: ShapeDecoration(
-                          color: Colors.white,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(5.r),
+              child:
+                  BlocBuilder<EbookBloc, EbookState>(builder: (context, state) {
+                if (state is EbookBlocLoading) {
+                  return Center(child: CircularProgressIndicator());
+                }
+                if (state is EbookBlocError) {
+                  print("hello");
+                  return Center(
+                      child: Text(
+                    "Errror",
+                    style: TextStyle(color: Colors.white),
+                  ));
+                }
+                if (state is EbookBlocLoaded) {
+                  ebook = BlocProvider.of<EbookBloc>(context).ebookModel;
+
+                  return ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: ebook.length,
+                    itemBuilder: (context, position) {
+                      return Padding(
+                        padding: const EdgeInsets.only(left: 10, top: 10),
+                        child: GestureDetector(
+                          onTap: () {
+                            Navigator.of(context).push(MaterialPageRoute(
+                                builder: (_) => Screen2(
+                                      img: ebook[position].bookImage.toString(),
+                                      discription: ebook[position]
+                                          .bookDescription
+                                          .toString(),
+                                      author:
+                                          ebook[position].bookAuthor.toString(),book: ebook[position].bookTitle.toString(),
+                                    )));
+                          },
+                          child: Container(
+                            width: 200.w,
+                            height: 160.h,
+                            decoration: ShapeDecoration(
+                              color: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(5.r),
+                              ),
+                            ),
+                            child: Image.network(
+                              ebook[position].bookImage.toString(),
+                              fit: BoxFit.cover,
+                            ),
                           ),
                         ),
-                        child: Image.asset(
-                          "assets/Book.png",
-                          fit: BoxFit.cover,
-                        ),
-                      ),
-                    ),
+                      );
+                    },
+                    separatorBuilder: (context, position) {
+                      return SizedBox(
+                        width: 10.w,
+                      );
+                    },
                   );
-                },
-                separatorBuilder: (context, position) {
-                  return SizedBox(
-                    width: 10.w,
-                  );
-                },
-              ),
+                } else {
+                  return SizedBox();
+                }
+              }),
             ),
             Padding(
               padding: const EdgeInsets.only(left: 6, top: 10),
@@ -251,7 +292,17 @@ class _Page1State extends State<Page1> {
                 itemBuilder: (context, position) {
                   return Padding(
                     padding: const EdgeInsets.only(top: 10),
-                    child: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen2()));},
+                    child: GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).push(MaterialPageRoute(
+                            builder: (_) => Screen2(
+                                  img: ebook[position].bookImage.toString(),
+                                  discription: ebook[position]
+                                      .bookDescription
+                                      .toString(),
+                                  author: ebook[position].bookAuthor.toString(),book: ebook[position].bookTitle.toString(),
+                                )));
+                      },
                       child: Container(
                         width: 270.w,
                         decoration: ShapeDecoration(
@@ -394,7 +445,17 @@ class _Page1State extends State<Page1> {
                   (index) {
                     return Padding(
                       padding: const EdgeInsets.only(left: 12, right: 10),
-                      child: GestureDetector(onTap: (){Navigator.of(context).push(MaterialPageRoute(builder: (_)=>Screen2()));},
+                      child: GestureDetector(
+                        onTap: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                              builder: (_) => Screen2(
+                                    img: ebook[index].bookImage.toString(),
+                                    discription:
+                                        ebook[index].bookDescription.toString(),
+                                    author: ebook[index].bookAuthor.toString(),
+                                    book: ebook[index].bookTitle.toString(),
+                                  )));
+                        },
                         child: Container(
                           width: 240.w,
                           decoration: ShapeDecoration(
